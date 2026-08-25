@@ -1,17 +1,48 @@
 ---
 import '../styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+
+const {
+	title = 'reindr - Interfaces for OpenCode sessions',
+	description = 'Give an OpenCode session an editable HTML canvas and work in the interface it builds.',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, 'https://reindr.dev');
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@type': 'SoftwareApplication',
+	name: 'reindr',
+	url: 'https://reindr.dev',
+	applicationCategory: 'DeveloperApplication',
+	operatingSystem: 'Linux, macOS, Windows',
+	description,
+};
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="description" content={description} />
+		<meta name="theme-color" content="#f1f3f1" />
+		<meta name="robots" content="index, follow" />
+		<link rel="canonical" href={canonical} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="reindr" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro + Qwik</title>
+		<title>{title}</title>
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 	</head>
-	<body class="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-900 flex items-center justify-center antialiased">
-		<slot />
-	</body>
+	<body><slot /></body>
 </html>
