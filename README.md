@@ -1,6 +1,6 @@
 # reindr-web
 
-The public splash page for [Reindr](https://github.com/nicodes/reindr-opencode), built with Astro.
+The public splash page for [Reindr](https://github.com/nicodes/reindr), built with Astro.
 
 ## Development
 
