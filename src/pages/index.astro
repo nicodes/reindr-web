@@ -1,12 +1,269 @@
 ---
-import { Counter } from '../components/Counter';
-import Title from '../components/Title.astro';
+import octicons from '@primer/octicons';
 import Layout from '../layouts/Layout.astro';
+
+const repo = 'https://github.com/nicodes/reindr-opencode';
+const docs = `${repo}#readme`;
+const icon = (name: keyof typeof octicons, size = 16) =>
+	octicons[name].toSVG({ width: size, height: size });
 ---
 
-<Layout>
-	<main class="flex flex-col items-center gap-12 px-6 py-16">
-		<Title />
-		<Counter client:visible />
-	</main>
+<Layout
+	title="reindr - Interfaces for OpenCode sessions"
+	description="Give an OpenCode session an editable HTML canvas. Reindr handles live reload, sandboxing, session routing, and browser-to-agent interactions."
+>
+	<div class="page-shell">
+		<header class="site-header">
+			<a class="brand" href="/" aria-label="reindr home">
+				<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+					<path class="mark-shell" d="M16 3 28 10v12L16 29 4 22V10L16 3Z"></path>
+					<path class="mark-lines" d="M10 10v6l-4-3m4 1L7 8m15 2v6l4-3m-4 1 3-6M10 16c0 7 12 7 12 0m-8 5h4"></path>
+				</svg>
+				<span>reindr</span>
+			</a>
+			<a class="header-cta" href={repo}>GitHub <span class="icon" set:html={icon('arrow-up-right', 14)} /></a>
+		</header>
+
+		<main>
+			<section class="hero">
+				<div class="hero-copy">
+					<p class="eyebrow"><span></span> The file is the interface</p>
+					<h1>Give the agent a canvas. <em>Work in what it builds.</em></h1>
+					<p class="lede">
+						Reindr gives every OpenCode session one editable HTML file and a live browser panel.
+						The agent writes the interface with ordinary tools; Reindr takes care of the reload,
+						the sandbox, and the route back to the session.
+					</p>
+					<div class="hero-actions">
+						<a class="primary-cta" href={repo}>View the source <span class="icon" set:html={icon('arrow-right', 16)} /></a>
+						<p>OpenCode plugin / Chromium / prototype</p>
+					</div>
+				</div>
+
+				<div class="product-frame" aria-label="A Reindr session showing a live test dashboard">
+					<div class="frame-bar">
+						<div class="frame-brand"><span class="menu-lines"></span> reindr / release-check</div>
+						<div class="frame-actions"><span class="live-dot"></span><b>live</b><span class="icon" set:html={icon('screen-full', 13)} /></div>
+					</div>
+					<div class="workspace">
+						<aside class="session-rail" aria-label="Session examples">
+							<p>SESSIONS</p>
+							<div class="session active"><i></i><span><b>Release check</b><small>build</small></span></div>
+							<div class="session"><i></i><span><b>API refactor</b><small>plan</small></span></div>
+							<div class="session"><i></i><span><b>Schema review</b><small>build</small></span></div>
+						</aside>
+						<div class="canvas">
+							<div class="canvas-bar"><span>release-gate.html</span><span>updated just now</span></div>
+							<div class="dashboard">
+								<div class="dashboard-head">
+									<div><small>RELEASE GATE / MAIN</small><h2>Ready when the red is gone.</h2></div>
+									<button type="button">Ask agent to fix</button>
+								</div>
+								<div class="metrics">
+									<div><small>PASSED</small><strong>47</strong><i class="good"></i></div>
+									<div><small>FAILED</small><strong>2</strong><i class="bad"></i></div>
+									<div><small>DURATION</small><strong>8.4s</strong><i></i></div>
+								</div>
+								<div class="test-list">
+									<div><span class="check good"></span><b>core / session routing</b><code>1.2s</code></div>
+									<div><span class="check good"></span><b>browser / live reload</b><code>2.8s</code></div>
+									<div class="failed"><span class="check bad"></span><b>security / stale capability</b><code>42ms</code></div>
+									<div class="failed"><span class="check bad"></span><b>controller / queue wakeup</b><code>19ms</code></div>
+								</div>
+								<div class="agent-note"><span class="icon" set:html={icon('sparkles-fill', 14)} /><p><b>Send to OpenCode</b> Fix the two failing tests, then rerun this dashboard.</p><span class="icon arrow" set:html={icon('arrow-up', 14)} /></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="principles" aria-label="How Reindr works">
+				<article>
+					<span class="number">01</span>
+					<div><h2>Plain HTML is the contract</h2><p>No component schema and no rendering DSL. The agent edits one normal HTML file with the same filesystem tools it already uses, and a write becomes a live update.</p></div>
+				</article>
+				<article>
+					<span class="number">02</span>
+					<div><h2>Every session keeps its own canvas</h2><p>The file follows the OpenCode session, not the working directory. Resume the session elsewhere and the interface comes back; switch sessions and the panel follows.</p></div>
+				</article>
+				<article>
+					<span class="number">03</span>
+					<div><h2>The interface can answer back</h2><p>A trusted click can send structured choices to the owning session. Generated code stays sandboxed, receives no raw SDK, and cannot reach another session.</p></div>
+				</article>
+			</section>
+
+			<section class="workflow" aria-label="The Reindr workflow">
+				<div class="section-head">
+					<p class="eyebrow"><span></span> One file, live</p>
+					<h2>The agent already knows how to build it.</h2>
+					<p>
+						Ask for a dashboard, a comparison table, or a form. Reindr opens the canvas immediately,
+						then stays out of the authoring path. HTML, CSS, and JavaScript remain readable, editable,
+						and local to your machine.
+					</p>
+				</div>
+
+				<div class="code-frame">
+					<div class="frame-bar dark-bar">
+						<div class="frame-brand"><span class="menu-lines"></span> ~/.local/share/reindr/sessions/session.html</div>
+						<div class="frame-actions"><span class="icon" set:html={icon('code-square', 13)} /><span class="icon" set:html={icon('file-code', 13)} /></div>
+					</div>
+					<div class="code-grid">
+						<pre><span class="line">01</span> <span class="tag">&lt;form</span> <span class="attr">id</span>=<span class="str">"release"</span><span class="tag">&gt;</span>
+<span class="line">02</span>   <span class="tag">&lt;label&gt;</span>Environment
+<span class="line">03</span>     <span class="tag">&lt;select</span> <span class="attr">name</span>=<span class="str">"target"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/select&gt;</span>
+<span class="line">04</span>   <span class="tag">&lt;/label&gt;</span>
+<span class="line">05</span>   <span class="tag">&lt;button&gt;</span>Deploy<span class="tag">&lt;/button&gt;</span>
+<span class="line">06</span> <span class="tag">&lt;/form&gt;</span>
+<span class="line">07</span>
+<span class="line">08</span> <span class="kw">release</span>.onsubmit = (<span class="arg">event</span>) =&gt; &lbrace;
+<span class="line">09</span>   event.preventDefault()
+<span class="line">10</span>   opencode.submit(&lbrace;
+<span class="line">11</span>     prompt: <span class="str">"Deploy this release"</span>,
+<span class="line">12</span>     data: &lbrace; target: release.target.value &rbrace;
+<span class="line">13</span>   &rbrace;)
+<span class="line">14</span> &rbrace;</pre>
+						<div class="bridge-summary">
+							<div><span class="icon" set:html={icon('file-code', 17)} /><p><b>Editable file</b><small>Normal tools write normal HTML.</small></p></div>
+							<i></i>
+							<div><span class="icon" set:html={icon('browser', 17)} /><p><b>Sandboxed panel</b><small>Changes appear without a rebuild.</small></p></div>
+							<i></i>
+							<div><span class="icon" set:html={icon('reply', 17)} /><p><b>Scoped interaction</b><small>A click returns to its own session.</small></p></div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="closing">
+				<p>Ask for an interface.<br />Keep working in it.</p>
+				<div class="chain"><span>YOUR PROMPT</span><i></i><span>SESSION HTML</span><i></i><span>LIVE PANEL</span></div>
+				<div class="closing-actions">
+					<a class="primary-cta light" href={repo}>Get Reindr <span class="icon" set:html={icon('arrow-right', 16)} /></a>
+					<a class="ghost-cta" href={docs}>Read the docs <span class="icon" set:html={icon('arrow-up-right', 14)} /></a>
+				</div>
+			</section>
+		</main>
+
+		<footer>
+			<a class="brand footer-brand" href="/"><span>reindr</span></a>
+			<p><a href={repo}>source</a> / <a href={docs}>docs</a></p>
+			<p>&copy; {new Date().getFullYear()} reindr</p>
+		</footer>
+	</div>
 </Layout>
+
+<style>
+	.page-shell { width: 100%; min-height: 100svh; overflow-x: hidden; }
+	.site-header { width: min(1180px, calc(100% - 40px)); height: 76px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; }
+	.brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-size: 19px; font-weight: 760; letter-spacing: -.03em; text-decoration: none; }
+	.brand-mark { width: 28px; height: 28px; }
+	.mark-shell { fill: var(--ink); }
+	.mark-lines { fill: none; stroke: var(--mint); stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+	.header-cta { display: inline-flex; align-items: center; color: var(--ink); border-bottom: 1px solid #c5cbc7; padding: 6px 0; font-size: 13px; font-weight: 650; text-decoration: none; white-space: nowrap; }
+	.header-cta span { margin-left: 5px; color: var(--mint-dark); }
+	:global(.icon svg) { display: block; fill: currentColor; }
+
+	.hero { width: min(1180px, calc(100% - 40px)); margin: 70px auto 110px; display: grid; grid-template-columns: .84fr 1.16fr; align-items: center; gap: 68px; }
+	.hero-copy { position: relative; z-index: 2; min-width: 0; }
+	.eyebrow { display: flex; align-items: center; gap: 9px; margin: 0 0 22px; color: var(--quiet); font: 620 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+	.eyebrow > span { width: 7px; height: 7px; border-radius: 50%; background: var(--mint-dark); box-shadow: 0 0 0 4px rgba(33, 122, 89, .12); }
+	h1 { max-width: 610px; margin: 0; color: var(--ink); font-size: clamp(46px, 5.8vw, 78px); font-weight: 590; line-height: .98; letter-spacing: -.062em; }
+	h1 em { display: block; color: var(--mint-dark); font-family: Georgia, serif; font-weight: 400; }
+	.lede { max-width: 530px; margin: 30px 0 32px; color: var(--quiet); font-size: 16px; line-height: 1.7; }
+	.hero-actions { display: flex; align-items: center; gap: 20px; }
+	.hero-actions p { margin: 0; color: #818984; font: 500 10px/1.4 var(--mono); text-transform: uppercase; letter-spacing: .05em; }
+	.primary-cta { display: inline-flex; align-items: center; gap: 30px; border-radius: 4px; background: var(--ink); color: white; padding: 14px 18px; font: 680 13px var(--sans); text-decoration: none; transition: transform .18s ease, background .18s ease; }
+	.primary-cta:hover { transform: translateY(-2px); background: #26302d; }
+	.primary-cta span { color: var(--mint); }
+
+	.product-frame { position: relative; min-width: 690px; border: 1px solid #cfd6d2; border-radius: 9px; background: white; box-shadow: 0 35px 80px rgba(18, 35, 29, .14), 0 3px 10px rgba(18, 35, 29, .07); overflow: hidden; transform: perspective(1400px) rotateY(-3deg) rotateX(1deg); }
+	.product-frame::before { content: ''; position: absolute; z-index: -1; width: 340px; height: 340px; right: -70px; top: -90px; border-radius: 50%; background: var(--mint); filter: blur(80px); opacity: .3; }
+	.frame-bar { height: 42px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #252b29; background: #101513; padding: 0 13px; color: #aeb8b3; font: 600 10px var(--mono); }
+	.frame-brand, .frame-actions { display: flex; align-items: center; gap: 10px; }
+	.menu-lines { width: 13px; height: 8px; border-block: 1px solid #69736e; position: relative; }
+	.menu-lines::after { content: ''; position: absolute; left: 0; right: 0; top: 3px; border-top: 1px solid #69736e; }
+	.frame-actions b { color: #7d8983; font-size: 9px; font-weight: 500; }
+	.frame-actions .icon { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 4px; background: #202724; color: #bac4bf; }
+	.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mint); box-shadow: 0 0 0 3px rgba(158, 230, 194, .12); }
+	.workspace { min-width: 0; display: grid; grid-template-columns: 142px minmax(0, 1fr); min-height: 530px; background: #090c0b; }
+	.session-rail { border-right: 1px solid #202623; padding: 16px 10px; background: #0d110f; }
+	.session-rail > p { margin: 0 7px 12px; color: #56605b; font: 600 8px var(--mono); letter-spacing: .12em; }
+	.session { display: flex; align-items: flex-start; gap: 8px; border: 1px solid transparent; border-radius: 6px; padding: 9px 7px; color: #77817c; }
+	.session.active { border-color: #29322e; background: #171d1a; color: #e3e9e6; }
+	.session i { flex: 0 0 auto; width: 6px; height: 6px; margin-top: 4px; border-radius: 50%; background: #46504b; }
+	.session.active i { background: var(--mint); }
+	.session span, .session b, .session small { display: block; min-width: 0; }
+	.session b { overflow: hidden; font: 530 9px var(--sans); text-overflow: ellipsis; white-space: nowrap; }
+	.session small { margin-top: 2px; color: #56605b; font: 8px var(--mono); }
+	.canvas { min-width: 0; margin: 10px; border: 1px solid #28302c; border-radius: 6px; overflow: hidden; background: #f4f6f5; }
+	.canvas-bar { min-height: 31px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #d9dfdc; padding: 0 11px; color: #78817d; font: 8.5px var(--mono); }
+	.canvas-bar span:first-child { color: #404944; }
+	.dashboard { min-width: 0; padding: 22px; color: #18201d; }
+	.dashboard-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; }
+	.dashboard-head small, .metrics small { color: #78817d; font: 650 7.5px var(--mono); letter-spacing: .1em; }
+	.dashboard h2 { max-width: 330px; margin: 7px 0 0; font-size: 25px; font-weight: 590; line-height: 1.06; letter-spacing: -.045em; }
+	.dashboard button { flex: 0 0 auto; border: 0; border-radius: 4px; background: #17201c; color: white; padding: 9px 10px; font: 600 8.5px var(--sans); }
+	.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; margin: 20px 0 15px; }
+	.metrics > div { position: relative; min-height: 74px; border: 1px solid #d9dfdc; border-radius: 5px; background: white; padding: 12px; }
+	.metrics strong { display: block; margin-top: 6px; font-size: 22px; font-weight: 590; letter-spacing: -.04em; }
+	.metrics i { position: absolute; right: 12px; bottom: 13px; width: 6px; height: 6px; border-radius: 50%; background: #9da5a1; }
+	.good { background: #2ca66f !important; }.bad { background: #d8665d !important; }
+	.test-list { border: 1px solid #d9dfdc; border-radius: 5px; background: white; overflow: hidden; }
+	.test-list > div { min-height: 37px; display: grid; grid-template-columns: 12px 1fr auto; align-items: center; gap: 8px; border-bottom: 1px solid #e7ebe9; padding: 0 11px; }
+	.test-list > div:last-child { border-bottom: 0; }
+	.test-list .failed { background: #fff9f8; }
+	.check { width: 6px; height: 6px; border-radius: 50%; }
+	.test-list b { font: 540 9px var(--sans); }
+	.test-list code { color: #818a85; font: 8px var(--mono); }
+	.agent-note { min-height: 49px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 10px; margin-top: 15px; border: 1px solid #bfdccf; border-radius: 5px; background: #eaf7f1; padding: 9px 11px; color: #217a59; }
+	.agent-note p { margin: 0; color: #4b5b54; font: 8.5px/1.4 var(--sans); }.agent-note b { display: block; color: #1d6f52; }.agent-note .arrow { width: 24px; height: 24px; display: grid; place-items: center; border-radius: 4px; background: #217a59; color: white; }
+
+	.principles { width: min(1180px, calc(100% - 40px)); margin: 0 auto 120px; border-top: 1px solid #d2d8d4; }
+	.principles article { display: grid; grid-template-columns: 90px 1fr; border-bottom: 1px solid #d2d8d4; padding: 32px 0; }
+	.principles article div { display: grid; grid-template-columns: .75fr 1fr; align-items: baseline; gap: 40px; }
+	.number { color: var(--mint-dark); font: 650 10px var(--mono); }
+	.principles h2 { margin: 0; color: var(--ink); font-size: 22px; font-weight: 580; letter-spacing: -.035em; }
+	.principles p { max-width: 560px; margin: 0; color: var(--quiet); font-size: 14px; line-height: 1.65; }
+
+	.workflow { width: min(1180px, calc(100% - 40px)); margin: 0 auto 110px; }
+	.section-head { max-width: 650px; margin-bottom: 40px; }
+	.section-head h2 { margin: 0 0 22px; color: var(--ink); font-size: clamp(32px, 4vw, 46px); font-weight: 560; line-height: 1.02; letter-spacing: -.05em; }
+	.section-head > p:not(.eyebrow) { margin: 0; color: var(--quiet); font-size: 15px; line-height: 1.7; }
+	.code-frame { border: 1px solid #29312d; border-radius: 8px; overflow: hidden; box-shadow: 0 24px 60px rgba(18, 35, 29, .1); }
+	.dark-bar { border-color: #29312d; }
+	.code-grid { display: grid; grid-template-columns: 1.25fr .75fr; min-height: 390px; background: #0b0f0d; }
+	.code-grid pre { margin: 0; overflow-x: auto; border-right: 1px solid #26302b; padding: 26px 28px; color: #d7dfdb; font: 11.5px/1.8 var(--mono); }
+	.line { display: inline-block; width: 24px; color: #46514c; user-select: none; }.tag { color: #86dcb2; }.attr { color: #e2bd73; }.str { color: #b7cf8b; }.kw { color: #9bb9ef; }.arg { color: #e7a9a5; }
+	.bridge-summary { display: flex; flex-direction: column; justify-content: center; gap: 18px; padding: 36px; }
+	.bridge-summary > div { display: grid; grid-template-columns: 34px 1fr; align-items: center; gap: 12px; color: var(--mint); }
+	.bridge-summary > div > span { width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid #34443d; border-radius: 6px; background: #121a16; }
+	.bridge-summary p, .bridge-summary b, .bridge-summary small { display: block; margin: 0; }.bridge-summary b { color: #e5ebe8; font-size: 12px; font-weight: 580; }.bridge-summary small { margin-top: 3px; color: #78837d; font: 9px/1.4 var(--mono); }
+	.bridge-summary > i { height: 24px; margin-left: 17px; border-left: 1px dashed #3d4b45; }
+
+	.closing { width: min(1180px, calc(100% - 40px)); margin: 0 auto; border-radius: 8px; background: var(--ink); color: white; padding: 65px; }
+	.closing > p { max-width: 760px; margin: 0 0 50px; font-size: clamp(42px, 6vw, 72px); font-weight: 530; line-height: .98; letter-spacing: -.055em; }
+	.chain { display: flex; flex-wrap: wrap; align-items: center; gap: 13px; margin-bottom: 35px; color: #93a099; font: 560 9px var(--mono); letter-spacing: .09em; }
+	.chain i { width: 50px; border-top: 1px dashed #53615a; }
+	.closing-actions { display: flex; align-items: center; gap: 22px; }
+	.primary-cta.light { background: var(--mint); color: #0b2a1f; }.primary-cta.light span { color: #0b2a1f; }
+	.ghost-cta { color: #c5cec9; border-bottom: 1px solid #3d4843; padding: 6px 0; font-size: 13px; font-weight: 650; text-decoration: none; }.ghost-cta span { margin-left: 5px; color: var(--mint); }
+
+	footer { width: min(1180px, calc(100% - 40px)); min-height: 120px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; color: #818984; font: 500 10px var(--mono); }
+	footer p:nth-child(2) { text-align: center; } footer p:last-child { text-align: right; }
+	footer a { color: #818984; text-decoration: none; border-bottom: 1px solid #c8cfcb; } footer a:hover { color: var(--ink); }
+	footer a.footer-brand { justify-self: start; border: 0; font-family: var(--sans); font-size: 16px; }
+
+	@media (max-width: 940px) {
+		.hero { grid-template-columns: minmax(0, 1fr); margin-top: 45px; gap: 60px; }.hero-copy { max-width: 700px; }.product-frame { min-width: 0; width: 100%; transform: none; }
+		.principles article div { grid-template-columns: 1fr; gap: 9px; }.code-grid { grid-template-columns: 1fr; }.code-grid pre { border-right: 0; border-bottom: 1px solid #26302b; }.bridge-summary { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: center; }.bridge-summary > i { width: 24px; height: 0; margin: 0; border-left: 0; border-top: 1px dashed #3d4b45; }
+	}
+	@media (max-width: 620px) {
+		.site-header, .hero, .principles, .workflow, .closing, footer { width: min(100% - 28px, 1180px); }.site-header { height: 64px; }.hero { margin: 48px auto 80px; }.eyebrow { margin-bottom: 18px; }
+		h1 { font-size: clamp(42px, 13vw, 60px); }.lede { margin-top: 24px; font-size: 15px; }.hero-actions { align-items: flex-start; flex-direction: column; gap: 12px; }
+		.product-frame { border-radius: 6px; }.workspace { grid-template-columns: 1fr; min-height: 0; }.session-rail { display: none; }.canvas { margin: 7px; }.dashboard { padding: 15px; }.dashboard h2 { font-size: 21px; }.dashboard button { display: none; }.metrics > div { min-height: 66px; padding: 9px; }.metrics strong { font-size: 18px; }.test-list b { font-size: 8px; }.agent-note { grid-template-columns: auto 1fr; }.agent-note .arrow { display: none; }
+		.principles article { grid-template-columns: 42px 1fr; padding: 26px 0; }.principles h2 { font-size: 19px; }.principles p { font-size: 13px; }
+		.code-grid pre { padding: 20px 16px; font-size: 9px; }.bridge-summary { display: flex; padding: 26px 20px; }.bridge-summary > i { width: 0; height: 16px; margin-left: 17px; border-top: 0; border-left: 1px dashed #3d4b45; }
+		.closing { padding: 40px 25px; }.chain i { width: 20px; }.closing-actions { flex-direction: column; align-items: flex-start; gap: 16px; }
+		footer { grid-template-columns: 1fr auto; padding: 30px 0; }.footer-brand { display: none !important; } footer p:nth-child(2) { text-align: left; }
+	}
+</style>

@@ -1,7 +1,8 @@
 {
-  "name": "web",
+  "name": "reindr-web",
   "type": "module",
   "version": "0.0.1",
+  "private": true,
   "engines": {
     "node": ">=22.12.0"
   },
@@ -9,13 +10,16 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "typecheck": "astro check",
     "astro": "astro"
   },
   "dependencies": {
-    "@builder.io/qwik": "^1.19.2",
-    "@qwikdev/astro": "^0.8.3",
-    "@tailwindcss/vite": "^4.2.2",
-    "astro": "^5.18.1",
-    "tailwindcss": "^4.2.2"
+    "@primer/octicons": "^19.33.0",
+    "astro": "^5.18.1"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@types/primer__octicons": "^19.21.0",
+    "typescript": "6"
   }
 }
